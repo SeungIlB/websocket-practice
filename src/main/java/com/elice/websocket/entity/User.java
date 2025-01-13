@@ -29,6 +29,9 @@ public class User implements UserDetails {
     String password;
     @Column(nullable = false)
     private String role;
+    @OneToMany(mappedBy = "user")
+    private List<Comment> comments;  // 사용자가 작성한 댓글 목록 (하나의 사용자는 여러 개의 댓글을 작성할 수 있음)
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
