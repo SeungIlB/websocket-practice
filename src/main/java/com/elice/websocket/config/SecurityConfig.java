@@ -24,7 +24,6 @@ public class SecurityConfig {
                         .requestMatchers("/mainPage").permitAll() // 메인 페이지 누구나 접근 가능
                         .requestMatchers("/signup").permitAll()  // 회원가입 누구나 접근 가능
                         .requestMatchers("/login").permitAll()   // 로그인 페이지 누구나 접근 가능
-                        .requestMatchers("/profile").permitAll()
                         .requestMatchers("/adminPage").hasRole("ADMIN") // 관리자 페이지는 ADMIN만 접근 가능
                         .requestMatchers("/myPage/**").hasAnyRole("ADMIN", "USER") // 사용자 페이지는 ADMIN, USER 모두 접근 가능
                         .anyRequest().authenticated() // 그 외 요청은 인증 필요
@@ -39,6 +38,7 @@ public class SecurityConfig {
 
                 // 폼 로그인 설정
                 .formLogin(AbstractHttpConfigurer::disable)
+                .httpBasic(AbstractHttpConfigurer::disable)
                 // 로그아웃 설정
                 .logout(logout -> logout
                         .logoutUrl("/logout") // 로그아웃 처리 URL
