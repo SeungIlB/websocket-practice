@@ -30,13 +30,13 @@ public class UserController {
     public ResponseEntity<String> login(@RequestBody LoginRequestDTO request, HttpSession session) {
         UserSessionDTO userSession = loginService.login(request, session);
         session.setAttribute("user", userSession);  // 세션에 사용자 정보 저장
-        return ResponseEntity.ok("Login successful for user: " + userSession.getEmail());
+        return ResponseEntity.ok("로그인에 성공했습니다!: " + userSession.getEmail());
     }
 
     @PostMapping("/logout")
     public ResponseEntity<String> logout(HttpSession session) {
         loginService.logout(session);
-        return ResponseEntity.ok("Logout successful");
+        return ResponseEntity.ok("로그아웃에 성공했습니다.");
     }
 
     @GetMapping("/profile")
