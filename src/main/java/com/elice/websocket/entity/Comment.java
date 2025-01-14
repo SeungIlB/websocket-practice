@@ -1,32 +1,43 @@
 package com.elice.websocket.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Getter
-@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
-    String comment;
-    LocalDateTime createdTime;
-    LocalDateTime updatedTime;
-    LocalDateTime deletedTime;
-    @OneToMany(mappedBy = "board_id")
-    List<Board> boards;
+    private Long id;
+
+    private String content;
+
+    private LocalDateTime createdTime;
+    private LocalDateTime updatedTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")  // 댓글을 작성한 사용자
-    private User user;  // 사용자와의 관계 (하나의 사용자는 여러 개의 댓글을 작성할 수 있음)
+    @JoinColumn(name = "board_id", nullable = false) // 댓글이 달린 게시글
+    private Board board;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "board_id")  // 댓글이 달린 게시글
-    private Board board;  // 게시글과의 관계 (하나의 게시글은 여러 개의 댓글을 가질 수 있음)
-
+    @JoinColumn(name = "user_id", nullable = false) // 댓글 작성자
+    @JsonIgnore
+    private User user;
+    // 빌더를 사용할 때 특정 필드 제외
+    @Builder
+    public Comment(String content, User user, Board board) {
+        this.content = content;
+        this.user = user;
+        this.board = board;
+    }
 }
+

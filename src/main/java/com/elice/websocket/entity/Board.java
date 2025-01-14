@@ -1,5 +1,6 @@
 package com.elice.websocket.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -33,11 +34,14 @@ public class Board {
     private String author; // 작성자 이름 추가
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false) // 작성자 정보
+    @JsonIgnore
     private User user;
 
-    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Comment> comments;
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Comment> comments; // 게시글의 댓글들
+
 
     @Builder
     public Board(String title, String content, String author, User user) {
