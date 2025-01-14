@@ -26,6 +26,7 @@ public class SecurityConfig {
                         .requestMatchers("/login").permitAll()   // 로그인 페이지 누구나 접근 가능
                         .requestMatchers("/adminPage").hasRole("ADMIN") // 관리자 페이지는 ADMIN만 접근 가능
                         .requestMatchers("/myPage/**").hasAnyRole("ADMIN", "USER") // 사용자 페이지는 ADMIN, USER 모두 접근 가능
+                        .requestMatchers("/echo").permitAll()
                         .anyRequest().authenticated() // 그 외 요청은 인증 필요
                 )
 
